@@ -1,0 +1,39 @@
+version: '2'
+services:
+  db:
+    image: mongo
+    container_name: mongodb
+    volumes:
+      - ./data/runtime/db:/data/db
+      - ./data/dump:/dump
+    command: mongod --smallfiles
+
+  rocketchat:
+    image: rocketchat/rocket.chat:latest
+    container_name: rocketchat
+    environment:
+      - MONGO_URL=mongodb://db:27017/meteor
+      - ROOT_URL=https://chat.supcd.serpro
+#      - MAIL_URL=smtp://USERNAME:PASSWORD@HOST:PORT/
+      - Accounts_UseDNSDomainCheck=false
+    links:
+      - db:db
+    ports:
+      - 3000:3000
+    volumes:
+      - ./logs:/home/app/logs:rw
+
+  hubot:
+    image: rocketchat/hubot-rocketchat:v0.1.4
+    environment:
+      - ROCKETCHAT_URL=rocketchat:3000
+      - ROCKETCHAT_ROOM=GENERAL
+      - ROCKETCHAT_USER=adminlinux
+      - ROCKETCHAT_PASSWORD=12qw!@QW
+      - BOT_NAME=admlinux
+      - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-greetings
+    links:
+      - rocketchat:rocketchat
+#  # this is used to expose the hubot port for notifications on the host on port 3001, e.g. for hubot-jenkins-notifier
+    ports:
+      - 3001:8080

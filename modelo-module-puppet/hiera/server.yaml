@@ -1,0 +1,7 @@
+wvcardoso::users:
+  - "wvcardoso"
+  - "willian"
+wvcardoso::install:
+  - "htop"
+  - "rsync"
+wvcardoso::pwd_root: '$6$jjnvbF8V$sT5CR4H2VnX9yuS4sKBsRcj3dYTQwXE7wI1m3yydw8V5nLGCSjVfBvIjxgE.56n7VVkEpiS0vLb9dTygGjlm21'
